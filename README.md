@@ -30,7 +30,7 @@ A [composite GitHub action](https://docs.github.com/en/actions/creating-actions/
         continue-on-error: true
         name: Analyse the repo with CodeSee
         steps:
-          - uses: Codesee-io/codesee-action@main
+          - uses: Codesee-io/codesee-action@v2
             with:
               codesee-token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
    ```
