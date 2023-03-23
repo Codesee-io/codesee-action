@@ -33,7 +33,7 @@ runs:
         distribution: "zulu"
 
       # CodeSee Maps Go support uses a static binary so there's no setup step required.
-      
+
     - name: Configure Node.js 18
       uses: actions/setup-node@v3
       if: ${{ fromJSON(steps.detect-languages.outputs.languages).javascript || fromJSON(steps.detect-languages.outputs.languages).kotlin }}
@@ -69,7 +69,7 @@ runs:
 
     - name: Generate Map
       id: generate-map
-      uses: Codesee-io/codesee-map-action@latest
+      uses: Codesee-io/codesee-map-action@staging
       with:
         step: map
         api_token: ${{ inputs.codesee-token }}
@@ -78,7 +78,7 @@ runs:
 
     - name: Upload Map
       id: upload-map
-      uses: Codesee-io/codesee-map-action@latest
+      uses: Codesee-io/codesee-map-action@staging
       with:
         step: mapUpload
         api_token: ${{ inputs.codesee-token }}
@@ -86,7 +86,7 @@ runs:
 
     - name: Insights
       id: insights
-      uses: Codesee-io/codesee-map-action@latest
+      uses: Codesee-io/codesee-map-action@staging
       with:
         step: insights
         api_token: ${{ inputs.codesee-token }}
