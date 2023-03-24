@@ -9,6 +9,9 @@ inputs:
   codesee-token:
     description: "The value of CODESEE_ARCH_DIAG_API_TOKEN"
     required: true
+  codesee-service-url:
+    description: "The URL to Codesee service"
+    required: false
 
 runs:
   using: "composite"
@@ -75,6 +78,7 @@ runs:
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
         languages: ${{ steps.detect-languages.outputs.languages }}
+        insights_service_url: ${{ inputs.codesee-service-url }}
 
     - name: Upload Map
       id: upload-map
@@ -83,6 +87,7 @@ runs:
         step: mapUpload
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
+        insights_service_url: ${{ inputs.codesee-service-url }}
 
     - name: Insights
       id: insights
@@ -91,3 +96,4 @@ runs:
         step: insights
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
+        insights_service_url: ${{ inputs.codesee-service-url }}
