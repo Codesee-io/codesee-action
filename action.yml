@@ -9,7 +9,7 @@ inputs:
   codesee-token:
     description: "The value of CODESEE_ARCH_DIAG_API_TOKEN"
     required: true
-  codesee-service-url:
+  codesee-url:
     description: "The URL to Codesee service"
     required: false
 
@@ -72,28 +72,28 @@ runs:
 
     - name: Generate Map
       id: generate-map
-      uses: Codesee-io/codesee-map-action@staging
+      uses: Codesee-io/codesee-map-action@latest
       with:
         step: map
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
         languages: ${{ steps.detect-languages.outputs.languages }}
-        insights_service_url: ${{ inputs.codesee-service-url }}
+        codesee_url: ${{ inputs.codesee-url }}
 
     - name: Upload Map
       id: upload-map
-      uses: Codesee-io/codesee-map-action@staging
+      uses: Codesee-io/codesee-map-action@latest
       with:
         step: mapUpload
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
-        insights_service_url: ${{ inputs.codesee-service-url }}
+        codesee_url: ${{ inputs.codesee-url }}
 
     - name: Insights
       id: insights
-      uses: Codesee-io/codesee-map-action@staging
+      uses: Codesee-io/codesee-map-action@latest
       with:
         step: insights
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
-        insights_service_url: ${{ inputs.codesee-service-url }}
+        codesee_url: ${{ inputs.codesee-url }}
