@@ -9,6 +9,9 @@ inputs:
   codesee-token:
     description: "The value of CODESEE_ARCH_DIAG_API_TOKEN"
     required: true
+  codesee-url:
+    description: "The URL to Codesee service"
+    required: false
 
 runs:
   using: "composite"
@@ -33,7 +36,7 @@ runs:
         distribution: "zulu"
 
       # CodeSee Maps Go support uses a static binary so there's no setup step required.
-      
+
     - name: Configure Node.js 18
       uses: actions/setup-node@v3
       if: ${{ fromJSON(steps.detect-languages.outputs.languages).javascript || fromJSON(steps.detect-languages.outputs.languages).kotlin }}
@@ -75,6 +78,7 @@ runs:
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
         languages: ${{ steps.detect-languages.outputs.languages }}
+        codesee_url: ${{ inputs.codesee-url }}
 
     - name: Upload Map
       id: upload-map
@@ -83,6 +87,7 @@ runs:
         step: mapUpload
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
+        codesee_url: ${{ inputs.codesee-url }}
 
     - name: Insights
       id: insights
@@ -91,3 +96,4 @@ runs:
         step: insights
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
+        codesee_url: ${{ inputs.codesee-url }}
