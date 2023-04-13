@@ -58,10 +58,8 @@ runs:
 
     # We need the rust toolchain because it uses rustc and cargo to inspect the package
     - name: Configure Rust 1.x stable
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@stable
       if: ${{ fromJSON(steps.detect-languages.outputs.languages).rust }}
-      with:
-        toolchain: stable
 
     - name: Configure .NET SDK 7
       uses: actions/setup-dotnet@v3
