@@ -24,6 +24,11 @@ runs:
         ref: ${{ github.event.pull_request.head.ref }}
         fetch-depth: 0
 
+    - name: Configure Node.js 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18"
+
     - name: Detect Languages
       id: detect-languages
       uses: Codesee-io/codesee-detect-languages-action@latest
@@ -36,12 +41,6 @@ runs:
         distribution: "zulu"
 
       # CodeSee Maps Go support uses a static binary so there's no setup step required.
-
-    - name: Configure Node.js 18
-      uses: actions/setup-node@v3
-      if: ${{ fromJSON(steps.detect-languages.outputs.languages).javascript || fromJSON(steps.detect-languages.outputs.languages).kotlin }}
-      with:
-        node-version: "18"
 
     - name: Configure Python 3.x
       uses: actions/setup-python@v4
@@ -65,8 +64,8 @@ runs:
       uses: actions/setup-dotnet@v3
       if: ${{ fromJSON(steps.detect-languages.outputs.languages).dot-net }}
       with:
-        dotnet-version: '7.x'
-        dotnet-quality: 'ga'
+        dotnet-version: "7.x"
+        dotnet-quality: "ga"
 
     - name: Generate Map
       id: generate-map
