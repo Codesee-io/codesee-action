@@ -12,6 +12,9 @@ inputs:
   codesee-url:
     description: "The URL to Codesee service"
     required: false
+  action-org:
+    description: "The github org where actions are stored. GitHub Enterprise Server users may have a custom org (e.g. 'synced-actions')."
+    required: false
 
 runs:
   using: "composite"
@@ -31,7 +34,7 @@ runs:
 
     - name: Detect Languages
       id: detect-languages
-      uses: Codesee-io/codesee-detect-languages-action@latest
+      uses: ${{ inputs.action-org || 'Codesee-io' }}/codesee-detect-languages-action@latest
 
     - name: Configure JDK 16
       uses: actions/setup-java@v3
