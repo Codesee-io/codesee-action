@@ -32,6 +32,10 @@ runs:
       with:
         node-version: "18"
 
+    - name: Echo
+      id: echo
+      run: echo "${{ inputs.action-org || 'Codesee-io' }}/codesee-detect-languages-action@latest"
+
     - name: Detect Languages
       id: detect-languages
       uses: ${{ inputs.action-org || 'Codesee-io' }}/codesee-detect-languages-action@latest
