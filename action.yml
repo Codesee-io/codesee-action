@@ -32,10 +32,6 @@ runs:
       with:
         node-version: "18"
 
-    - name: Echo
-      run: echo "${{ inputs.action-org == '' && 'Codesee-io' || inputs.action-org }}/codesee-detect-languages-action@latest"
-      shell: bash
-
     - name: Detect Languages
       id: detect-languages
       uses: ${{ inputs.action-org == '' && 'Codesee-io' || inputs.action-org }}/codesee-detect-languages-action@latest
