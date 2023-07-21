@@ -31,7 +31,8 @@ runs:
 
     - name: Detect Languages
       id: detect-languages
-      uses: Codesee-io/codesee-detect-languages-action@latest
+      run: node ${{ github.action_path }}/detect-lang/dist/index.js
+      shell: bash
 
     - name: Configure JDK 16
       uses: actions/setup-java@v3
@@ -49,12 +50,6 @@ runs:
         python-version: "3.x"
         architecture: "x64"
 
-    - name: Configure Ruby '3.x'
-      uses: ruby/setup-ruby@v1
-      if: ${{ fromJSON(steps.detect-languages.outputs.languages).ruby }}
-      with:
-        ruby-version: "3.0"
-
     # We need the rust toolchain because it uses rustc and cargo to inspect the package
     - name: Configure Rust 1.x stable
       uses: dtolnay/rust-toolchain@stable
@@ -69,8 +64,9 @@ runs:
 
     - name: Generate Map
       id: generate-map
-      uses: Codesee-io/codesee-map-action@latest
-      with:
+      run: node ${{ github.action_path }}/map/dist/index.js
+      shell: bash
+      env:
         step: map
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
@@ -79,8 +75,9 @@ runs:
 
     - name: Upload Map
       id: upload-map
-      uses: Codesee-io/codesee-map-action@latest
-      with:
+      run: node ${{ github.action_path }}/map/dist/index.js
+      shell: bash
+      env:
         step: mapUpload
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
@@ -88,8 +85,9 @@ runs:
 
     - name: Insights
       id: insights
-      uses: Codesee-io/codesee-map-action@latest
-      with:
+      run: node ${{ github.action_path }}/map/dist/index.js
+      shell: bash
+      env:
         step: insights
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}

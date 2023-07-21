@@ -1,0 +1,44 @@
+name: "CodeSee Map"
+description: "Generate a Dependency Map snapshot for CodeSee"
+author: CodeSee
+inputs:
+  api_token:
+    description: The CodeSee API Token for the user who owns the dependency map
+    required: false
+  webpack_config_path:
+    description: The path relative to your repo root where your webpack config file is stored
+    default: "__NULL__"
+  support_typescript:
+    description: Should tsconfig.json be honored when traversing dependencies
+    default: false
+  github_ref:
+    description: The github ref (value of $GITHUB_REF) which references the branch name being processed
+    required: true
+  skip_upload:
+    description: Skips the upload steps for testing purposes
+    required: false
+    default: false
+  step:
+    description: Which action step is this running
+    required: false
+    default: "legacy"
+  languages:
+    description: The output from Codesee-io/codesee-detect-languages-action
+    required: false
+    default: "{}"
+  with_event_data:
+    description: The path to the saved event.json from the previous workflow that triggered the action
+    required: false
+  with_event_name:
+    description: The name of the event that triggered the previous workflow that triggered the action
+    required: false
+  codesee_url:
+    description: The URL of the CodeSee service
+    required: false
+
+runs:
+  using: "node16"
+  main: "dist/index.js"
+branding:
+  icon: map
+  color: purple
