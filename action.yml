@@ -72,7 +72,7 @@ runs:
         github_ref: ${{ github.ref }}
         languages: ${{ steps.detect-languages.outputs.languages }}
         codesee_url: ${{ inputs.codesee-url }}
-        NODE_OPTIONS: --max-old-space-size=4096
+        NODE_OPTIONS: --max-old-space-size=6144
 
     - name: Upload Map
       id: upload-map
@@ -83,7 +83,7 @@ runs:
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
         codesee_url: ${{ inputs.codesee-url }}
-        NODE_OPTIONS: --max-old-space-size=4096
+        NODE_OPTIONS: --max-old-space-size=6144
 
     - name: Insights
       id: insights
@@ -94,4 +94,4 @@ runs:
         api_token: ${{ inputs.codesee-token }}
         github_ref: ${{ github.ref }}
         codesee_url: ${{ inputs.codesee-url }}
-        NODE_OPTIONS: --max-old-space-size=4096
+        NODE_OPTIONS: --max-old-space-size=6144
