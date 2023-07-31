@@ -12,26 +12,10 @@ inputs:
   codesee-url:
     description: "The URL to Codesee service"
     required: false
-  skip-installing-node:
-    description: "Should action skip installing Node?"
+  lang-setup:
+    description: "Which language toolchains should we install? Accepted values: 'all', 'none', or a comma separated list of languages: 'node, python, jdk, .net, rust'"
     required: false
-    default: 'false'
-  skip-installing-jdk:
-    description: "Should action skip installing JDK?"
-    required: false
-    default: 'false'
-  skip-installing-rust:
-    description: "Should action skip installing Rust?"
-    required: false
-    default: 'false'
-  skip-installing-python:
-    description: "Should action skip installing Python?"
-    required: false
-    default: 'false'
-  skip-installing-dotnet:
-    description: "Should action skip installing .NET?"
-    required: false
-    default: 'false'
+    default: "all"
 
 runs:
   using: "composite"
@@ -48,7 +32,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: "18"
-      if: ${{ inputs.skip-installing-node == 'false' }}
+      if: ${{ inputs.lang-setup == 'all' || contains(inputs.lang-setup, 'node') }}
 
     - name: Detect Languages
       id: detect-languages
@@ -57,7 +41,7 @@ runs:
 
     - name: Configure JDK 16
       uses: actions/setup-java@v3
-      if: ${{ inputs.skip-installing-jdk == 'false' && fromJSON(steps.detect-languages.outputs.languages).java }}
+      if: ${{ (inputs.lang-setup == 'all' || contains(inputs.lang-setup, 'jdk')) && fromJSON(steps.detect-languages.outputs.languages).java }}
       with:
         java-version: "16"
         distribution: "zulu"
@@ -66,7 +50,7 @@ runs:
 
     - name: Configure Python 3.x
       uses: actions/setup-python@v4
-      if: ${{ inputs.skip-installing-python == 'false' && fromJSON(steps.detect-languages.outputs.languages).python }}
+      if: ${{ (inputs.lang-setup == 'all' || contains(inputs.lang-setup, 'jdk')) && fromJSON(steps.detect-languages.outputs.languages).python }}
       with:
         python-version: "3.x"
         architecture: "x64"
@@ -74,11 +58,11 @@ runs:
     # We need the rust toolchain because it uses rustc and cargo to inspect the package
     - name: Configure Rust 1.x stable
       uses: dtolnay/rust-toolchain@stable
-      if: ${{ inputs.skip-installing-rust == 'false' && fromJSON(steps.detect-languages.outputs.languages).rust }}
+      if: ${{ (inputs.lang-setup == 'all' || contains(inputs.lang-setup, 'rust')) && fromJSON(steps.detect-languages.outputs.languages).rust }}
 
     - name: Configure .NET SDK 7
       uses: actions/setup-dotnet@v3
-      if: ${{ inputs.skip-installing-dotnet == 'false' && fromJSON(steps.detect-languages.outputs.languages).dot-net }}
+      if: ${{ (inputs.lang-setup == 'all' || contains(inputs.lang-setup, '.net')) && fromJSON(steps.detect-languages.outputs.languages).dot-net }}
       with:
         dotnet-version: "7.x"
         dotnet-quality: "ga"

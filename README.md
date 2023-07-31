@@ -12,27 +12,27 @@ A [composite GitHub action](https://docs.github.com/en/actions/creating-actions/
 
 1. Copy the following template into your new workflow file:
 
-    ```yaml
-    on:
-      push:
-        branches:
-          - main
-      pull_request_target:
-        types: [opened, synchronize, reopened]
+   ```yaml
+   on:
+     push:
+       branches:
+         - main
+     pull_request_target:
+       types: [opened, synchronize, reopened]
 
-    name: CodeSee
+   name: CodeSee
 
-    permissions: read-all
+   permissions: read-all
 
-    jobs:
-      codesee:
-        runs-on: ubuntu-latest
-        continue-on-error: true
-        name: Analyse the repo with CodeSee
-        steps:
-          - uses: Codesee-io/codesee-action@v2
-            with:
-              codesee-token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
+   jobs:
+     codesee:
+       runs-on: ubuntu-latest
+       continue-on-error: true
+       name: Analyse the repo with CodeSee
+       steps:
+         - uses: Codesee-io/codesee-action@v2
+           with:
+             codesee-token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
    ```
 
 1. Commit the new workflow to GitHub.
@@ -40,7 +40,9 @@ A [composite GitHub action](https://docs.github.com/en/actions/creating-actions/
 
 ## Skip installing packages on every run
 
-If you run on a self hosted-runner, it might be more efficient to not installing packages everytime you run this action by skipping them.
+If you run on a self hosted-runner, it might be more efficient to skip installing packages everytime you run this action.
+Set the `lang-setup` input to 'none' to skip all language setup.
+If you want to skip most languages but still want the action to install node and .net (for example), make a comma-separated list: `lang-setup: "node, .net"`
 
 ```
 jobs:
@@ -52,9 +54,5 @@ jobs:
       - uses: Codesee-io/codesee-action@v2
         with:
           codesee-token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
-          skip-installing-node: true
-          skip-installing-jdk: true
-          skip-installing-rust: true
-          skip-installing-python: true
-          skip-installing-dotnet: true
+          lang-setup: 'none'
 ```
