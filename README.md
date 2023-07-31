@@ -41,8 +41,12 @@ A [composite GitHub action](https://docs.github.com/en/actions/creating-actions/
 ## Skip installing packages on every run
 
 If you run on a self hosted-runner, it might be more efficient to skip installing packages everytime you run this action.
-Set the `lang-setup` input to 'none' to skip all language setup.
-If you want to skip most languages but still want the action to install node and .net (for example), make a comma-separated list: `lang-setup: "node, .net"`
+
+### The `lang-setup` input variable
+
+- By default, `lang-setup` is set to 'all', and this action will setup whichever language toolchains it believes are needed.
+- Set the `lang-setup` input to 'none' to skip all language setup. But beware! Node is required for the action to run. If you do not have node configured in your runner environment, you'll need to use the more specific option below.
+- If you want to skip most languages but still want the action to install specific language toolchains, make a comma-separated list. For example, for node and .net, `lang-setup: "node, .net"`. The complete list of language toolchains: node, python, jdk, rust, .net. All other language analysis is run using the node toolchain.
 
 ```
 jobs:

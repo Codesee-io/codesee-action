@@ -50,7 +50,7 @@ runs:
 
     - name: Configure Python 3.x
       uses: actions/setup-python@v4
-      if: ${{ (inputs.lang-setup == 'all' || contains(inputs.lang-setup, 'jdk')) && fromJSON(steps.detect-languages.outputs.languages).python }}
+      if: ${{ (inputs.lang-setup == 'all' || contains(inputs.lang-setup, 'python')) && fromJSON(steps.detect-languages.outputs.languages).python }}
       with:
         python-version: "3.x"
         architecture: "x64"
