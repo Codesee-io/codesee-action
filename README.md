@@ -5,7 +5,7 @@ A [composite GitHub action](https://docs.github.com/en/actions/creating-actions/
 ## How to use this action
 
 1. Define a new action in your repository by adding a file in the `.github/workflows/` directory. For example:
-  
+
    ```shell
    touch .github/workflows/codesee.yml
    ```
@@ -37,3 +37,24 @@ A [composite GitHub action](https://docs.github.com/en/actions/creating-actions/
 
 1. Commit the new workflow to GitHub.
 1. That's it! CodeSee will analyze your code to keep your visualizations up to date.
+
+## Skip installing packages on every run
+
+If you run on a self hosted-runner, it might be more efficient to not installing packages everytime you run this action by skipping them.
+
+```
+jobs:
+  codesee:
+    runs-on: self-hosted
+    continue-on-error: true
+    name: Analyse the repo with CodeSee
+    steps:
+      - uses: Codesee-io/codesee-action@v2
+        with:
+          codesee-token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
+          skip-installing-node: true
+          skip-installing-jdk: true
+          skip-installing-rust: true
+          skip-installing-python: true
+          skip-installing-dotnet: true
+```

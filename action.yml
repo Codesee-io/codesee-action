@@ -12,6 +12,31 @@ inputs:
   codesee-url:
     description: "The URL to Codesee service"
     required: false
+  skip-installing-node:
+    description: "Should action skip installing Node?"
+    required: false
+    type: boolean
+    default: false
+  skip-installing-jdk:
+    description: "Should action skip installing JDK?"
+    required: false
+    type: boolean
+    default: false
+  skip-installing-rust:
+    description: "Should action skip installing Rust?"
+    required: false
+    type: boolean
+    default: false
+  skip-installing-python:
+    description: "Should action skip installing Python?"
+    required: false
+    type: boolean
+    default: false
+  skip-installing-dotnet:
+    description: "Should action skip installing .NET?"
+    required: false
+    type: boolean
+    default: false
 
 runs:
   using: "composite"
@@ -28,6 +53,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: "18"
+      if: ${{ !inputs.skip-installing-node }}
 
     - name: Detect Languages
       id: detect-languages
@@ -40,6 +66,7 @@ runs:
       with:
         java-version: "16"
         distribution: "zulu"
+      if: ${{ !inputs.skip-installing-jdk }}
 
       # CodeSee Maps Go support uses a static binary so there's no setup step required.
 
@@ -49,11 +76,13 @@ runs:
       with:
         python-version: "3.x"
         architecture: "x64"
+      if: ${{ !inputs.skip-installing-python }}
 
     # We need the rust toolchain because it uses rustc and cargo to inspect the package
     - name: Configure Rust 1.x stable
       uses: dtolnay/rust-toolchain@stable
       if: ${{ fromJSON(steps.detect-languages.outputs.languages).rust }}
+      if: ${{ !inputs.skip-installing-rust }}
 
     - name: Configure .NET SDK 7
       uses: actions/setup-dotnet@v3
@@ -61,6 +90,7 @@ runs:
       with:
         dotnet-version: "7.x"
         dotnet-quality: "ga"
+      if: ${{ !inputs.skip-installing-dotnet }}
 
     - name: Generate Map
       id: generate-map
