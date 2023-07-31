@@ -13,7 +13,7 @@ inputs:
     description: "The URL to Codesee service"
     required: false
   github-com-token:
-    description: "A personal GitHub token to avoid rate limits from unauthenticated requests"
+    description: "A personal GitHub.com token to avoid rate limits due to unauthenticated requests from GHES environments. See https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#avoiding-rate-limit-issues"
     required: false
 
 runs:
@@ -31,6 +31,7 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: "18"
+        token: ${{ inputs.github-com-token }}
 
     - name: Detect Languages
       id: detect-languages
