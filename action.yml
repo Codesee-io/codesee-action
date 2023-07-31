@@ -12,6 +12,8 @@ inputs:
   codesee-url:
     description: "The URL to Codesee service"
     required: false
+  github-com-token:
+    description: "A personal GitHub token to avoid rate limits from unauthenticated requests"
 
 runs:
   using: "composite"
@@ -49,7 +51,7 @@ runs:
       with:
         python-version: "3.x"
         architecture: "x64"
-        token:
+        token: ${{ inputs.github-com-token }}
 
     # We need the rust toolchain because it uses rustc and cargo to inspect the package
     - name: Configure Rust 1.x stable
