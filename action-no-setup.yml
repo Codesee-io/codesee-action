@@ -1,0 +1,64 @@
+name: "CodeSee analysis"
+description: "Analyze the repo with CodeSee"
+
+# Composite actions cannot access secrets, so we need users to provide the value
+# of the CODESEE_ARCH_DIAG_API_TOKEN secret through the codesee-token variable.
+# This usually look like this:
+# codesee-token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
+inputs:
+  codesee-token:
+    description: "The value of CODESEE_ARCH_DIAG_API_TOKEN"
+    required: true
+  codesee-url:
+    description: "The URL to Codesee service"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check out the code
+      uses: actions/checkout@v3
+      id: checkout
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
+        fetch-depth: 0
+
+    - name: Detect Languages
+      id: detect-languages
+      run: node ${{ github.action_path }}/detect-lang/dist/index.js
+      shell: bash
+
+    - name: Generate Map
+      id: generate-map
+      run: node ${{ github.action_path }}/map/dist/index.js
+      shell: bash
+      env:
+        step: map
+        api_token: ${{ inputs.codesee-token }}
+        github_ref: ${{ github.ref }}
+        languages: ${{ steps.detect-languages.outputs.languages }}
+        codesee_url: ${{ inputs.codesee-url }}
+        NODE_OPTIONS: --max-old-space-size=6144
+
+    - name: Upload Map
+      id: upload-map
+      run: node ${{ github.action_path }}/map/dist/index.js
+      shell: bash
+      env:
+        step: mapUpload
+        api_token: ${{ inputs.codesee-token }}
+        github_ref: ${{ github.ref }}
+        codesee_url: ${{ inputs.codesee-url }}
+        NODE_OPTIONS: --max-old-space-size=6144
+
+    - name: Insights
+      id: insights
+      run: node ${{ github.action_path }}/map/dist/index.js
+      shell: bash
+      env:
+        step: insights
+        api_token: ${{ inputs.codesee-token }}
+        github_ref: ${{ github.ref }}
+        codesee_url: ${{ inputs.codesee-url }}
+        NODE_OPTIONS: --max-old-space-size=6144
