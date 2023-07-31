@@ -49,6 +49,7 @@ runs:
       with:
         python-version: "3.x"
         architecture: "x64"
+        token:
 
     # We need the rust toolchain because it uses rustc and cargo to inspect the package
     - name: Configure Rust 1.x stable
