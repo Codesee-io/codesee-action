@@ -57,7 +57,7 @@ runs:
 
     # We need the rust toolchain because it uses rustc and cargo to inspect the package
     - name: Configure Rust 1.x stable
-      uses: dtolnay/rust-toolchain@stable
+      uses: Codesee-io/rust-toolchain@stable
       if: ${{ (inputs.lang-setup == 'all' || contains(inputs.lang-setup, 'rust')) && fromJSON(steps.detect-languages.outputs.languages).rust }}
 
     - name: Configure .NET SDK 7
