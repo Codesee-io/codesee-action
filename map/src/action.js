@@ -334,28 +334,26 @@ async function requireApiToken(data) {
 }
 
 async function main() {
-  const stepMap = new Map([
-    ["map", [generate]],
-    ["mapUpload", [requireApiToken, upload]],
-    ["insights", [requireApiToken, insights]],
-    ["legacy", [requireApiToken, generate, upload, insights]],
-  ]);
-  const data = await setup();
-  const step = data.config.step;
-
-  if (!stepMap.has(step)) {
-    core.error(
-      `Unable to find run configuration for ${step}. Should be one of ${[
-        ...stepMap.keys(),
-      ].join(", ")}`
-    );
-    return;
-  }
-
-  for (const stepFunc of stepMap.get(step)) {
-    core.info(`Running step ${stepFunc.name}`);
-    await stepFunc(data);
-  }
+  // const stepMap = new Map([
+  //   ["map", [generate]],
+  //   ["mapUpload", [requireApiToken, upload]],
+  //   ["insights", [requireApiToken, insights]],
+  //   ["legacy", [requireApiToken, generate, upload, insights]],
+  // ]);
+  // const data = await setup();
+  // const step = data.config.step;
+  // if (!stepMap.has(step)) {
+  //   core.error(
+  //     `Unable to find run configuration for ${step}. Should be one of ${[
+  //       ...stepMap.keys(),
+  //     ].join(", ")}`
+  //   );
+  //   return;
+  // }
+  // for (const stepFunc of stepMap.get(step)) {
+  //   core.info(`Running step ${stepFunc.name}`);
+  //   await stepFunc(data);
+  // }
 }
 
 main()

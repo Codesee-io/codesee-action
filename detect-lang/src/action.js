@@ -35,8 +35,8 @@ async function removeNpmrc() {
 }
 
 async function main() {
-  await core.group("Removing .npmrc if exists", removeNpmrc);
-  await core.group("Detect Languages", runCodeseeDetectLanguages);
+  // await core.group("Removing .npmrc if exists", removeNpmrc);
+  // await core.group("Detect Languages", runCodeseeDetectLanguages);
 }
 
 main()
