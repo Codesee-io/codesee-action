@@ -55,22 +55,22 @@ async function uploadInsight(config, insightType) {
 
 async function run(config) {
   let exitCode = 0;
-  // for (const insightType of INSIGHTS) {
-  //   const stepExitCode = await core.group(
-  //     `Collecting ${insightType}`,
-  //     async () => collectInsight(insightType)
-  //   );
-  //   exitCode += stepExitCode;
-  //   if (stepExitCode !== 0) {
-  //     core.error("Generation Step failed with exit code ${stepExitCode}");
-  //   } else if (config.skipUpload) {
-  //     core.info(`Skipping ${insightType} upload`);
-  //   } else {
-  //     exitCode += await core.group(`Uploading ${insightType}`, async () =>
-  //       uploadInsight(config, insightType)
-  //     );
-  //   }
-  // }
+  for (const insightType of INSIGHTS) {
+    const stepExitCode = await core.group(
+      `Collecting ${insightType}`,
+      async () => collectInsight(insightType)
+    );
+    exitCode += stepExitCode;
+    if (stepExitCode !== 0) {
+      core.error("Generation Step failed with exit code ${stepExitCode}");
+    } else if (config.skipUpload) {
+      core.info(`Skipping ${insightType} upload`);
+    } else {
+      exitCode += await core.group(`Uploading ${insightType}`, async () =>
+        uploadInsight(config, insightType)
+      );
+    }
+  }
 
   return exitCode;
 }
